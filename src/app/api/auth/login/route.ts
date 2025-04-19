@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     }
 
     // Get the API URL from environment variables
-    const apiUrl = process.env.API_URL;
+    const apiUrl = process.env.API_URL || "http://localhost:5001";
     
     if (!apiUrl) {
       console.error('API_URL environment variable is not set');

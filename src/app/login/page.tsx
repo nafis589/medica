@@ -101,7 +101,7 @@ export default function LoginPage() {
       
       console.log('Attempting login with:', { identifier: trimmedIdentifier });
       
-      const response = await axios.post('/api/auth/login', {
+      const response = await axios.post('http://localhost:5001/api/auth/login', {
         identifier: trimmedIdentifier,
         password: trimmedPassword,
         rememberMe
