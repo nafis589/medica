@@ -1,11 +1,7 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Le nom est obligatoire'],
-    trim: true
-  },
   email: {
     type: String,
     required: [true, 'L\'email est obligatoire'],
@@ -28,7 +24,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ['patient', 'doctor', 'admin'],
-    default: 'patient'
+    required: true,
   },
   profileImage: {
     type: String
@@ -42,7 +38,8 @@ const userSchema = new mongoose.Schema({
     default: Date.now
   }
 }, { 
-  timestamps: true 
+  timestamps: true,
+  discriminatorKey: 'role' // Allows for future user type differentiation
 });
 
 // Middleware to update the 'updatedAt' field on save
@@ -50,6 +47,19 @@ userSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   next();
 });
+
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+// Comparaison de mot de passe
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
 
 // Remove password when converting to JSON
 userSchema.methods.toJSON = function() {

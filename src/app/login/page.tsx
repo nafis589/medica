@@ -120,7 +120,7 @@ export default function LoginPage() {
         }
         
         // Redirect based on user role
-        if (response.data.user.role === 'patient') {
+        if (response.data.user.role === 'Patient') {
           router.push('/dashboard/patient');
         } else if (response.data.user.role === 'doctor') {
           router.push('/dashboard/doctor');

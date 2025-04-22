@@ -271,7 +271,7 @@ const PatientRegistrationForm: React.FC = () => {
       setSubmitError(null);
       
       // Use the correct backend URL
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+      const backendUrl = 'http://localhost:5001';
       
       // Log what's being sent (only in development)
       console.log('Sending data to backend:', formData);
